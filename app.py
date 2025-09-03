@@ -1,13 +1,19 @@
 from flask import Flask, render_template, request
 from groq import Groq
 from pineconewrapper import PineconeWrapper
+import os
+import __main__
+print("Running from:", __main__.__file__)
 
 app = Flask(__name__)
+
 pinecone = PineconeWrapper()
 
 client = Groq(api_key="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")
 
 messages = [] 
+
+print("Current working dir:", os.getcwd())
 
 def generate_response(prompt):
     response = client.chat.completions.create(
@@ -18,7 +24,8 @@ def generate_response(prompt):
 
 @app.route("/")
 def chathome():
-    return render_template("chat.html", messages=messages)
+
+    return render_template("index.html", messages=messages)
 
 @app.route("/chat", methods=["POST"])
 def chat():
